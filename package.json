@@ -1,0 +1,77 @@
+{
+  "name": "rn-sample",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "test:coverage": "jest --coverage --watchAll=false",
+    "test:watch": "jest test --watch",
+    "lint": "npx eslint .",
+    "husky:prepare": "husky install",
+    "prepare": "husky install"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.16.1",
+    "@react-native-community/slider": "^4.2.2",
+    "@react-native-picker/picker": "^2.4.0",
+    "@react-navigation/bottom-tabs": "^6.3.1",
+    "@react-navigation/native": "^6.0.8",
+    "@react-navigation/native-stack": "^6.5.0",
+    "axios": "^0.26.0",
+    "i18next": "^21.6.11",
+    "moment": "^2.29.3",
+    "moment-timezone": "^0.5.34",
+    "react": "17.0.2",
+    "react-i18next": "^11.15.4",
+    "react-native": "0.67.2",
+    "react-native-config": "^1.4.5",
+    "react-native-elements": "^3.4.2",
+    "react-native-encrypted-storage": "^4.0.2",
+    "react-native-localize": "^2.2.2",
+    "react-native-modal": "^13.0.1",
+    "react-native-orientation-locker": "^1.1.6",
+    "react-native-paper": "^4.12.0",
+    "react-native-responsive-screen": "^1.4.2",
+    "react-native-safe-area-context": "^3.4.1",
+    "react-native-screens": "^3.11.0",
+    "react-native-select-dropdown": "^1.8.0",
+    "react-native-splash-screen": "^3.3.0",
+    "react-native-svg": "^12.3.0",
+    "react-native-uuid": "^2.0.1",
+    "react-native-vector-icons": "^9.1.0",
+    "react-native-video": "^5.2.0",
+    "react-query": "^3.34.14",
+    "react-test-renderer": "^17.0.2",
+    "use-context-selector": "^1.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/jest-native": "^4.0.5",
+    "@testing-library/react-native": "^9.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-react": "^7.30.1",
+    "husky": "^7.0.4",
+    "jest": "^26.6.3",
+    "jest-mock-axios": "^4.5.0",
+    "metro-react-native-babel-preset": "^0.66.2"
+  },
+  "overrides": {
+    "shell-quote": "1.7.3",
+    "hermes-engine": "0.11.0",
+    "react-native-windows": "0.67.2"
+  }
+}
