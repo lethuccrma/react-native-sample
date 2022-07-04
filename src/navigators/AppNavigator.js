@@ -1,17 +1,10 @@
-import React, { createContext, useState } from 'react';
+import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
+import AuthContext from '../contexts/AuthContext';
 
 const Stack = createNativeStackNavigator();
-
-const AuthenticationContext = createContext({
-  authentication: {
-    authenticated: false,
-    token: '',
-  },
-  setAuthentication: () => {},
-});
 
 function AppNavigator() {
   const [authentication, setAuthentication] = useState({
@@ -21,7 +14,7 @@ function AppNavigator() {
   return (
     // <NavigationContainer>
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthenticationContext.Provider value={{ authentication, setAuthentication }}>
+    <AuthContext.Provider value={{ authentication, setAuthentication }}>
       <Stack.Navigator>
         {authentication.authenticated && (
         <Stack.Screen
@@ -36,7 +29,7 @@ function AppNavigator() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-    </AuthenticationContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
