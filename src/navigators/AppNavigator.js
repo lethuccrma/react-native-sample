@@ -14,7 +14,6 @@ function AppNavigator() {
   });
   return (
     // <NavigationContainer>
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <AuthContext.Provider value={{ authentication, setAuthentication }}>
       <Stack.Navigator>
         {authentication.authenticated && (

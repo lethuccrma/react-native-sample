@@ -4,6 +4,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'no-unused-vars': 'warn',
+    'react/jsx-no-constructed-context-values': 'off',
   },
   ignorePatterns: ['coverage'],
 };
