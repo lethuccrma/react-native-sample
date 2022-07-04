@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 function LoginScreen() {
   const { setAuthentication } = useContext(AuthContext);
   const navigation = useNavigation();
-  const [inputs, setInputs] = useState({
+  const [user, setUser] = useState({
     username: '',
     password: '',
   });
@@ -63,7 +63,7 @@ function LoginScreen() {
   const [error, setError] = useState('');
 
   const handleInputsChange = (key) => (text) => {
-    setInputs((pre) => ({ ...pre, [key]: text }));
+    setUser((pre) => ({ ...pre, [key]: text }));
   };
 
   const handleLoginButton = async () => {
@@ -72,8 +72,8 @@ function LoginScreen() {
     try {
       const result = (
         await Apis.post(server.LOGIN_ENDPOINT, {
-          username: inputs.username,
-          password: inputs.password,
+          username: user.username,
+          password: user.password,
         })
       ).data;
       setAuthentication({
@@ -97,7 +97,7 @@ function LoginScreen() {
           autoCapitalize="none"
           style={[styles.input, { marginTop: 30 }]}
           onChangeText={handleInputsChange('username')}
-          value={inputs.username}
+          value={user.username}
         />
         <TextInput
           placeholder="Password"
@@ -105,7 +105,7 @@ function LoginScreen() {
           style={styles.input}
           secureTextEntry
           onChangeText={handleInputsChange('password')}
-          value={inputs.password}
+          value={user.password}
         />
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity
