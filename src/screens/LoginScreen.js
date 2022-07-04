@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -9,9 +9,8 @@ import {
   ActivityIndicator,
   View,
 } from 'react-native';
-import Apis from '../apis';
-import server from '../configs/server';
-import AuthContext from '../contexts/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthSlice from '../redux/auth/auth.slice';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,39 +52,24 @@ const styles = StyleSheet.create({
 });
 
 function LoginScreen() {
-  const { setAuthentication } = useContext(AuthContext);
-  const navigation = useNavigation();
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     username: '',
     password: '',
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleInputsChange = (key) => (text) => {
     setUser((pre) => ({ ...pre, [key]: text }));
   };
 
   const handleLoginButton = async () => {
-    setIsLoading(true);
-    setError(undefined);
-    try {
-      const result = (
-        await Apis.post(server.LOGIN_ENDPOINT, {
-          username: user.username,
-          password: user.password,
-        })
-      ).data;
-      setAuthentication({
-        authenticated: true,
-        expire: result.expire,
-        token: result.token,
-      });
-      navigation.navigate('HOME');
-    } catch (err) {
-      setError(err.response.data.message || err.message);
-    }
-    setIsLoading(false);
+    dispatch(
+      AuthSlice.actions.startLogin({
+        username: user.username,
+        password: user.password,
+      }),
+    );
   };
 
   return (
@@ -107,13 +91,13 @@ function LoginScreen() {
           onChangeText={handleInputsChange('password')}
           value={user.password}
         />
-        <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.errorText}>{auth.loginError}</Text>
         <TouchableOpacity
           style={styles.button}
           onPress={handleLoginButton}
-          disabled={isLoading}
+          disabled={auth.loginPending}
         >
-          {isLoading ? (
+          {auth.loginPending ? (
             <ActivityIndicator size="small" color="white" />
           ) : (
             <Text style={styles.buttonText}>LOGIN</Text>
