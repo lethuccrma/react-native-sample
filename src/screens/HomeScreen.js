@@ -1,5 +1,7 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, Button } from 'react-native';
+import { useDispatch } from 'react-redux';
+import AuthSlice from '../redux/auth/auth.slice';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,9 +11,15 @@ const styles = StyleSheet.create({
   },
 });
 function HomeScreen() {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(AuthSlice.actions.logout());
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Home</Text>
+      <Button onPress={handleLogout} title="Logout" />
     </SafeAreaView>
   );
 }
