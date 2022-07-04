@@ -10,6 +10,7 @@ function AppNavigator() {
   const [authentication, setAuthentication] = useState({
     authenticated: false,
     token: '',
+    expire: '',
   });
   return (
     // <NavigationContainer>
