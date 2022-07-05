@@ -8,8 +8,8 @@ import {
   Text,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import AuthSlice from '../redux/auth/auth.slice';
 import { FAB } from 'react-native-paper';
+import AuthSlice from '../redux/auth/auth.slice';
 
 const styles = StyleSheet.create({
   container: {
