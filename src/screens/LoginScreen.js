@@ -1,14 +1,13 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   SafeAreaView,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   View,
 } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import colors from '../constants/colors';
 import AuthSlice from '../redux/auth/auth.slice';
@@ -18,22 +17,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    borderColor: '#fff',
-    color: 'white',
   },
   header: {
     fontSize: 25,
     fontWeight: '700',
     textAlign: 'center',
+    color: colors.mainColor,
+    letterSpacing: 1.5,
   },
   input: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#777',
     marginTop: 15,
-    padding: 5,
-    fontSize: 14,
-    borderRadius: 5,
   },
   errorText: {
     color: 'red',
@@ -77,34 +70,28 @@ function LoginScreen() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View
-        style={{
-          position: 'absolute',
-          backgroundColor: '#fff',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 200,
-        }}
-      />
+    <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text style={styles.header}>CRYPTO WALLET</Text>
           <TextInput
-            placeholder="Username"
-            autoCapitalize="none"
-            style={[styles.input, { marginTop: 30 }]}
-            onChangeText={handleInputsChange('username')}
+            mode="outlined"
+            label="Username"
             value={user.username}
+            onChangeText={handleInputsChange('username')}
+            style={[styles.input, { marginTop: 30 }]}
+            activeOutlineColor={colors.secondaryColor}
+            autoCapitalize={false}
           />
           <TextInput
-            placeholder="Password"
-            autoCapitalize="none"
+            mode="outlined"
+            label="Password"
+            value={user.password}
+            onChangeText={handleInputsChange('password')}
             style={styles.input}
             secureTextEntry
-            onChangeText={handleInputsChange('password')}
-            value={user.password}
+            activeOutlineColor={colors.secondaryColor}
+            autoCapitalize={false}
           />
           <Text style={styles.errorText}>{auth.loginError}</Text>
           <TouchableOpacity

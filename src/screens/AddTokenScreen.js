@@ -113,7 +113,7 @@ function AddTokenScreen() {
           )}
           style={styles.inputContainer}
           onChangeText={handleTokenInputChange('code')}
-          activeOutlineColor={colors.mainColor}
+          activeOutlineColor={colors.secondaryColor}
         />
         <TextInput
           mode="outlined"
@@ -122,7 +122,7 @@ function AddTokenScreen() {
           value={token.value}
           onChangeText={handleTokenInputChange('value')}
           style={styles.inputContainer}
-          activeOutlineColor={colors.mainColor}
+          activeOutlineColor={colors.secondaryColor}
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity

@@ -25,7 +25,7 @@ function AppNavigator() {
           headerLeft: () => (
             <Button
               onPress={() => navigation.navigate('HOME')}
-              title="<"
+              title="Home"
               color={colors.lightBlue}
             />
           ),
