@@ -38,10 +38,18 @@ function AppNavigator() {
                 dispatch(AuthSlice.actions.logout());
               }}
               title="Log out"
-              color={colors.lightBlue}
+              color="white"
             />
           ),
           headerTitle: 'Home',
+          headerStyle: {
+            backgroundColor: '#f4511e',
+            borderBottomWidth: 0,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         })}
       />
     </Stack.Navigator>

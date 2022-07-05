@@ -7,9 +7,10 @@ import {
   FlatList,
   Text,
 } from 'react-native';
-import { FAB } from 'react-native-paper';
+import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import qs from 'qs';
 import Apis from '../apis';
 import server from '../configs/server';
 import CoinCard from '../components/CoinCard';
@@ -31,7 +32,45 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  walletInfo: {
+    backgroundColor: '#f4511e',
+    borderColor: '#f4511e',
+    color: 'white',
+    flexDirection: 'row',
+    padding: 20,
+  },
+  textContainer: {
+    marginLeft: 10,
+  },
 });
+
+function ShowWalletInfo({ name, description }) {
+  return (
+    <View style={styles.walletInfo}>
+      <Avatar.Image
+        size={50}
+        source={{
+          uri: `https://ui-avatars.com/api/?${qs.stringify({
+            name,
+            background: 'random',
+          })}`,
+        }}
+      />
+      <View style={styles.textContainer}>
+        <Text style={{ color: 'white', fontSize: 20 }}>
+          Name:
+          {' '}
+          {name}
+        </Text>
+        <Text style={{ color: 'white', fontSize: 16, marginTop: 4 }}>
+          Description:
+          {' '}
+          {description}
+        </Text>
+      </View>
+    </View>
+  );
+}
 
 function HomeScreen() {
   const navigator = useNavigation();
@@ -57,6 +96,7 @@ function HomeScreen() {
         setWalletInfo(response.data);
         setIsLoading(false);
 
+        console.log(auth.token);
         console.log(`Wallet Info: ${response.data}`);
         console.log(response.data.wallet);
         console.log(response.data.wallet.tokens);
@@ -68,7 +108,6 @@ function HomeScreen() {
       });
   }, []);
 
-  const tokenKeyExtractor = ({ code }) => code;
   const renderCoinCard = ({ item }) => (
     <CoinCard code={item.symbol} value={item.name} />
   );
@@ -78,13 +117,19 @@ function HomeScreen() {
         {isLoading ? (
           <Text>isLoading</Text>
         ) : (
-          <FlatList
-            style={styles.flatListContainer}
-            contentContainerStyle={styles.contentFlatListContainer}
-            data={walletInfo.wallet.tokens}
-            keyExtractor={tokenKeyExtractor}
-            renderItem={renderCoinCard}
-          />
+          <View flex={1}>
+            <ShowWalletInfo
+              name={walletInfo.wallet.name}
+              description={walletInfo.wallet.description}
+            />
+            <FlatList
+              style={styles.flatListContainer}
+              contentContainerStyle={styles.contentFlatListContainer}
+              data={walletInfo.wallet.tokens}
+              keyExtractor={(item) => item.id}
+              renderItem={renderCoinCard}
+            />
+          </View>
         )}
 
         <FAB
