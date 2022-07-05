@@ -1,15 +1,7 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Button,
-  View,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
-import { useDispatch } from 'react-redux';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
-import AuthSlice from '../redux/auth/auth.slice';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,36 +10,11 @@ const styles = StyleSheet.create({
   },
 });
 function HomeScreen() {
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(AuthSlice.actions.logout());
-  };
+  const navigator = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 1, borderWidth: 1, borderColor: 'red' }}>
-        <Button onPress={handleLogout} title="Logout" />
-        {/* <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: 'red',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 70,
-            height: 70,
-            position: 'absolute',
-            backgroundColor: 'red',
-            borderRadius: 35,
-            bottom: 20,
-            right: 20,
-          }}
-          onPress={() => {
-            console.log('Button is pressed');
-          }}
-        >
-          <Text style={{ color: 'white', fontSize: 64 }}>+</Text>
-        </TouchableOpacity> */}
+      <View style={{ flex: 1, borderColor: 'red' }}>
         <FAB
           icon="plus"
           style={{
@@ -56,7 +23,9 @@ function HomeScreen() {
             right: 0,
             bottom: 0,
           }}
-          onPress={() => console.log('Pressed')}
+          onPress={() => {
+            navigator.navigate('ADD_TOKEN');
+          }}
         />
       </View>
     </SafeAreaView>
