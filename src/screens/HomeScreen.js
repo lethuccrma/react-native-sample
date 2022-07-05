@@ -87,6 +87,46 @@ function ShowWalletInfo({ name, description }) {
   );
 }
 
+function ShowWalletTokens({ fetching, fetchError, tokens }) {
+  if (fetching) {
+    return (
+      <View flex={1} justifyContent="center" alignItems="center">
+        <Progress.Circle size={60} thickness={10} indeterminate />
+      </View>
+    );
+  }
+  if (fetchError.length > 0) {
+    return (
+      <View flex={1} justifyContent="center" alignItems="center">
+        <Text>Something was wrong!</Text>
+        <Text>
+          Error:
+          {fetchError}
+        </Text>
+      </View>
+    );
+  }
+  if (!tokens || tokens.length === 0) {
+    return (
+      <View flex={1} justifyContent="center" alignItems="center">
+        <Text>I do not have any token!</Text>
+      </View>
+    );
+  }
+  return (
+    <View flex={1}>
+      <FlatList
+        style={styles.flatListContainer}
+        contentContainerStyle={styles.contentFlatListContainer}
+        data={tokens}
+        keyExtractor={(item) => item.id}
+        // eslint-disable-next-line max-len
+        renderItem={({ item }) => <CoinCard onPress={() => {}} code={item.symbol} value={item.name} />}
+      />
+    </View>
+  );
+}
+
 function HomeScreen() {
   const navigator = useNavigation();
   const wallet = useSelector((state) => state.wallet);
@@ -95,10 +135,6 @@ function HomeScreen() {
   useEffect(() => {
     dispatch(WalletSlice.actions.fetchWallet());
   }, []);
-
-  const renderCoinCard = ({ item }) => (
-    <CoinCard onPress={() => {}} code={item.symbol} value={item.name} />
-  );
   return (
     <View style={{ flex: 1, backgroundColor: colors.mainColor }}>
       <View
@@ -121,21 +157,11 @@ function HomeScreen() {
             borderTopRightRadius: 32,
           }}
         >
-          {wallet.fetching ? (
-            <View flex={1} justifyContent="center" alignItems="center">
-              <Progress.Circle size={60} thickness={10} indeterminate />
-            </View>
-          ) : (
-            <View flex={1}>
-              <FlatList
-                style={styles.flatListContainer}
-                contentContainerStyle={styles.contentFlatListContainer}
-                data={wallet.tokens}
-                keyExtractor={(item) => item.id}
-                renderItem={renderCoinCard}
-              />
-            </View>
-          )}
+          <ShowWalletTokens
+            fetching={wallet.fetching}
+            fetchError={wallet.fetchError}
+            tokens={wallet.tokens}
+          />
 
           <FAB
             icon="plus"
