@@ -1,8 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
-import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
+import PrivateNavigator from './PrivateNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,8 +12,8 @@ function AppNavigator() {
     <Stack.Navigator>
       {auth.authenticated ? (
         <Stack.Screen
-          name="HOME"
-          component={HomeScreen}
+          name="PRIVATE"
+          component={PrivateNavigator}
           options={{ headerShown: false }}
         />
       ) : (
