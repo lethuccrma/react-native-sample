@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   buttonOk: {
     padding: 10,
     marginLeft: 10,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.mainColor,
     borderRadius: 10,
     width: 90,
     alignItems: 'center',

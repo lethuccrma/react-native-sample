@@ -37,15 +37,13 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 15,
     marginLeft: 10,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.mainColor,
     borderRadius: 10,
     alignItems: 'center',
     width: 150,
   },
   buttonText: { color: 'white', fontWeight: '700' },
 });
-
-const tokenKeyExtractor = ({ code }) => code;
 
 function AddTokenScreen() {
   const [token, setToken] = useState({
@@ -115,6 +113,7 @@ function AddTokenScreen() {
           )}
           style={styles.inputContainer}
           onChangeText={handleTokenInputChange('code')}
+          activeOutlineColor={colors.mainColor}
         />
         <TextInput
           mode="outlined"
@@ -123,6 +122,7 @@ function AddTokenScreen() {
           value={token.value}
           onChangeText={handleTokenInputChange('value')}
           style={styles.inputContainer}
+          activeOutlineColor={colors.mainColor}
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity
