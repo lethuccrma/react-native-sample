@@ -6,6 +6,7 @@ module.exports = {
     'no-unused-vars': 'warn',
     'react/jsx-no-constructed-context-values': 'off',
     'no-param-reassign': 'warn',
+    'react/prop-types': 'warn',
   },
   ignorePatterns: ['coverage'],
 };
