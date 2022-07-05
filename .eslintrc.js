@@ -7,6 +7,7 @@ module.exports = {
     'react/jsx-no-constructed-context-values': 'off',
     'no-param-reassign': 'warn',
     'react/prop-types': 'warn',
+    'import/no-cycle': 'warn',
   },
   ignorePatterns: ['coverage'],
 };
