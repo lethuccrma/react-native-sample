@@ -6,13 +6,13 @@ import {
   FlatList,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import * as Progress from 'react-native-progress';
 import CoinCard from '../components/CoinCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import AuthSlice from '../redux/auth/auth.slice';
@@ -91,7 +91,7 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
   if (fetching) {
     return (
       <View flex={1} justifyContent="center" alignItems="center">
-        <Progress.Circle size={60} thickness={10} indeterminate />
+        <ActivityIndicator size="large" />
       </View>
     );
   }
