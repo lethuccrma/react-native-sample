@@ -6,6 +6,7 @@ import server from '../../configs/server';
 
 function* handleFetchWallet() {
   try {
+    // const response = await APIs.get(server.GET_WALLET);
     const response = yield call(APIs.get, server.GET_WALLET);
     const { wallet } = response.data || {};
 

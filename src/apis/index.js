@@ -10,6 +10,7 @@ const APIs = axios.create({
   },
 });
 
+/* Interceptor */
 const responseHandler = (response) => response;
 
 const requestHandler = (request) => {
