@@ -118,7 +118,6 @@ function AddTokenScreen() {
         <TextInput
           mode="outlined"
           label="Token Name"
-          autoCapitalize="characters"
           value={token.value}
           onChangeText={handleTokenInputChange('value')}
           style={styles.inputContainer}
