@@ -1,50 +1,69 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView, StyleSheet, FlatList, Alert,
+  SafeAreaView,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  Text,
+  View,
+  ActivityIndicator,
 } from 'react-native';
-import { Dialog, Button, Paragraph } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import {
+  TextInput,
+} from 'react-native-paper';
+
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
 import APIs from '../apis';
-import CoinCard from '../components/CoinCard';
 import server from '../configs/server';
-import symbols from '../constants/symbols';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import { generateURL } from '../utils/string';
+import TokenModal from '../components/TokenModal';
+import colors from '../constants/colors';
 
 const styles = StyleSheet.create({
-  container: {
+  safeContainer: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  flatListContainer: {
+  container: {
+    flex: 1,
     paddingHorizontal: 20,
   },
-  contentFlatListContainer: {
-    paddingTop: 10,
+  inputContainer: {
+    marginTop: 20,
   },
+  buttonContainer: { marginTop: 20, alignItems: 'center' },
+  button: {
+    paddingVertical: 15,
+    marginLeft: 10,
+    backgroundColor: colors.lightBlue,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: 150,
+  },
+  buttonText: { color: 'white', fontWeight: '700' },
 });
 
 const tokenKeyExtractor = ({ code }) => code;
 
 function AddTokenScreen() {
-  const [selectedToken, setToken] = useState(null);
+  const [token, setToken] = useState({
+    code: '',
+    value: '',
+  });
+  const [symbolModalVisible, setSymbolModalVisible] = useState(false);
   const [requesting, setRequesting] = useState(false);
+  const wallet = useSelector((state) => state.wallet);
 
   const dispatch = useDispatch();
-
-  const handleSelectToken = (selected) => setToken(selected);
-  const hideDialog = () => setToken(null);
-
-  const renderCoinCard = ({ item }) => (
-    <CoinCard onPress={handleSelectToken} code={item.code} value={item.value} />
-  );
 
   const handleAddToken = async () => {
     setRequesting(true);
     try {
-      await APIs.post(generateURL(server.ADD_TOKEN, { walletId: 1 }), {
-        symbol: selectedToken.code,
-        name: selectedToken.value,
+      await APIs.post(generateURL(server.ADD_TOKEN, { walletId: wallet.ID }), {
+        symbol: token.code,
+        name: token.value,
       });
 
       // refetch wallet
@@ -55,37 +74,74 @@ function AddTokenScreen() {
       Alert.alert('Something went wrong :(');
       console.log(err);
     }
-    hideDialog();
     setRequesting(false);
   };
 
-  const genInfo = () => {
-    if (requesting) {
-      return 'Processing... Please wait!';
-    }
-    return selectedToken
-      ? `Do you want to add token ${selectedToken.code}-${selectedToken.value}`
-      : '';
+  const handleSubmitToken = (submittedToken) => {
+    setToken(submittedToken);
+  };
+
+  const handleTokenInputChange = (key) => (value) => {
+    setToken((pre) => ({ ...pre, [key]: value }));
+  };
+
+  const closeSymbolModal = () => {
+    setSymbolModalVisible(false);
+  };
+
+  const openSymbolModal = () => {
+    setSymbolModalVisible(true);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        style={styles.flatListContainer}
-        contentContainerStyle={styles.contentFlatListContainer}
-        data={symbols}
-        keyExtractor={tokenKeyExtractor}
-        renderItem={renderCoinCard}
-      />
-      <Dialog visible={!!selectedToken} onDismiss={hideDialog}>
-        <Dialog.Content>
-          <Paragraph>{genInfo()}</Paragraph>
-        </Dialog.Content>
-        <Dialog.Actions>
-          <Button disabled={requesting} onPress={hideDialog}>Cancel</Button>
-          <Button disabled={requesting} onPress={handleAddToken}>Ok</Button>
-        </Dialog.Actions>
-      </Dialog>
+    <SafeAreaView style={styles.safeContainer}>
+      <View style={styles.container}>
+        <TextInput
+          mode="outlined"
+          label="Token Symbol"
+          autoCapitalize="characters"
+          value={token.code}
+          right={(
+            <TextInput.Icon
+              // eslint-disable-next-line react/no-unstable-nested-components
+              name={() => (
+                <Icon
+                  onPress={openSymbolModal}
+                  name="caret-down-circle-outline"
+                  size={24}
+                />
+              )}
+            />
+          )}
+          style={styles.inputContainer}
+          onChangeText={handleTokenInputChange('code')}
+        />
+        <TextInput
+          mode="outlined"
+          label="Token Name"
+          autoCapitalize="characters"
+          value={token.value}
+          onChangeText={handleTokenInputChange('value')}
+          style={styles.inputContainer}
+        />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={handleAddToken}
+            style={styles.button}
+            disabled={requesting}
+          >
+            {requesting
+              ? <ActivityIndicator size="small" />
+              : <Text style={styles.buttonText}>Add Token</Text>}
+          </TouchableOpacity>
+        </View>
+        <TokenModal
+          code={token.code}
+          visible={symbolModalVisible}
+          onClose={closeSymbolModal}
+          onSubmit={handleSubmitToken}
+        />
+      </View>
     </SafeAreaView>
   );
 }

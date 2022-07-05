@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -96,7 +96,7 @@ function HomeScreen() {
   }, []);
 
   const renderCoinCard = ({ item }) => (
-    <CoinCard code={item.symbol} value={item.name} />
+    <CoinCard onPress={() => {}} code={item.symbol} value={item.name} />
   );
   return (
     <View style={{ flex: 1, backgroundColor: colors.mainColor }}>
