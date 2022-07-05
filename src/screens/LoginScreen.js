@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import colors from '../constants/colors';
 import AuthSlice from '../redux/auth/auth.slice';
 
 const styles = StyleSheet.create({
@@ -17,6 +18,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#fff',
+    color: 'white',
   },
   header: {
     fontSize: 25,
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   button: {
-    backgroundColor: '#327de6',
+    backgroundColor: colors.mainColor,
     marginTop: 30,
     padding: 15,
     borderRadius: 10,
@@ -73,38 +77,50 @@ function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.header}>CRYPTO WALLET</Text>
-        <TextInput
-          placeholder="Username"
-          autoCapitalize="none"
-          style={[styles.input, { marginTop: 30 }]}
-          onChangeText={handleInputsChange('username')}
-          value={user.username}
-        />
-        <TextInput
-          placeholder="Password"
-          autoCapitalize="none"
-          style={styles.input}
-          secureTextEntry
-          onChangeText={handleInputsChange('password')}
-          value={user.password}
-        />
-        <Text style={styles.errorText}>{auth.loginError}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleLoginButton}
-          disabled={auth.loginPending}
-        >
-          {auth.loginPending ? (
-            <ActivityIndicator size="small" color="white" />
-          ) : (
-            <Text style={styles.buttonText}>LOGIN</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: '#fff',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 200,
+        }}
+      />
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Text style={styles.header}>CRYPTO WALLET</Text>
+          <TextInput
+            placeholder="Username"
+            autoCapitalize="none"
+            style={[styles.input, { marginTop: 30 }]}
+            onChangeText={handleInputsChange('username')}
+            value={user.username}
+          />
+          <TextInput
+            placeholder="Password"
+            autoCapitalize="none"
+            style={styles.input}
+            secureTextEntry
+            onChangeText={handleInputsChange('password')}
+            value={user.password}
+          />
+          <Text style={styles.errorText}>{auth.loginError}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleLoginButton}
+            disabled={auth.loginPending}
+          >
+            {auth.loginPending ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.buttonText}>LOGIN</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }
 

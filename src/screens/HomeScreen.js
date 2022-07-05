@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CoinCard from '../components/CoinCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import AuthSlice from '../redux/auth/auth.slice';
+import colors from '../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,8 +35,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   walletInfo: {
-    backgroundColor: '#f4511e',
-    borderColor: '#f4511e',
+    backgroundColor: colors.mainColor,
+    borderColor: colors.mainColor,
     color: 'white',
     flexDirection: 'row',
     padding: 20,
@@ -98,10 +99,16 @@ function HomeScreen() {
     <CoinCard code={item.symbol} value={item.name} />
   );
   return (
-    <View style={{ flex: 1, backgroundColor: '#f4511e' }}>
-      <View style={{
-        position: 'absolute', backgroundColor: '#fff', bottom: 0, left: 0, right: 0, height: 200,
-      }}
+    <View style={{ flex: 1, backgroundColor: colors.mainColor }}>
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: '#fff',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 200,
+        }}
       />
       <SafeAreaView style={styles.container}>
         <ShowWalletInfo name={wallet.name} description={wallet.description} />
