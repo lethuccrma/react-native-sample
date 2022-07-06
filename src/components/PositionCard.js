@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import moment from 'moment';
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -24,8 +26,13 @@ function PositionCard({ position }) {
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
-        <Text style={styles.symbol}>{position.amount}</Text>
-        <Text style={styles.value}>{position.createdAt}</Text>
+        <Text style={styles.symbol}>
+          {'Amount: '}
+          <Text style={{ ...styles.symbol, color: 'green' }}>{position.amount}</Text>
+        </Text>
+        <Text style={styles.value}>
+          {`Created time: ${moment(position.createdAt).format('h:mm:ss A, MMMM Do YYYY')}`}
+        </Text>
       </View>
     </View>
   );

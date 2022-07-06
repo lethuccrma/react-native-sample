@@ -41,10 +41,15 @@ function AppNavigator() {
             <Button
               onPress={() => navigation.navigate('HOME')}
               title="< Home"
-              color={colors.lightBlue}
+              color="white"
             />
           ),
-          headerTitle: 'Token detail',
+          headerTitle: 'Token Detail',
+          headerTintColor: 'white',
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: colors.mainColor,
+          },
         })}
       />
     </Stack.Navigator>
