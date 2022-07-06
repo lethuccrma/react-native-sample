@@ -5,6 +5,7 @@ import { Button } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import AddTokenScreen from '../screens/AddTokenScreen';
 import colors from '../constants/colors';
+import TokenScreen from '../screens/TokenScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,20 @@ function AppNavigator() {
             />
           ),
           headerTitle: 'Add Token',
+        })}
+      />
+      <Stack.Screen
+        name="TOKEN_DETAIL"
+        component={TokenScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.navigate('HOME')}
+              title="< Home"
+              color={colors.lightBlue}
+            />
+          ),
+          headerTitle: 'Token detail',
         })}
       />
     </Stack.Navigator>

@@ -17,6 +17,7 @@ import CoinCard from '../components/CoinCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import AuthSlice from '../redux/auth/auth.slice';
 import colors from '../constants/colors';
+import TokenScreen from './TokenScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -113,6 +114,8 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
       </View>
     );
   }
+  console.log(tokens[0].positions);
+  const navigator = useNavigation();
   return (
     <View flex={1}>
       <FlatList
@@ -120,8 +123,15 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
         contentContainerStyle={styles.contentFlatListContainer}
         data={tokens}
         keyExtractor={(item) => item.id}
-        // eslint-disable-next-line max-len
-        renderItem={({ item }) => <CoinCard onPress={() => {}} code={item.symbol} value={item.name} />}
+        renderItem={({ item }) => (
+          <CoinCard
+            onPress={() => {
+              navigator.navigate('TOKEN_DETAIL', { token: item });
+            }}
+            code={item.symbol}
+            value={item.name}
+          />
+        )}
       />
     </View>
   );
