@@ -123,12 +123,10 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <CoinCard
-            positions={item.positions}
             onPress={() => {
               navigator.navigate('TOKEN_DETAIL', { token: item });
             }}
-            code={item.symbol}
-            value={item.name}
+            token={item}
           />
         )}
       />

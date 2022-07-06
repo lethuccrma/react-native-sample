@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, View,
+  StyleSheet, Text, TouchableOpacity, View, Alert,
 } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import SwipeRowHold from './SwipeRowHold';
 import colors from '../constants/colors';
+import APIs from '../apis';
+import { generateURL } from '../utils/string';
+import server from '../configs/server';
+import WalletSlice from '../redux/wallet/wallet.slice';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,16 +51,40 @@ const styles = StyleSheet.create({
 });
 
 function CoinCard({
-  code, value, onPress, positions,
+  onPress, token,
 }) {
+  const {
+    symbol: code, name: value, positions, id,
+  } = token;
   const navigator = useNavigation();
-  const tokens = useSelector((state) => state.wallet.tokens);
+  const wallet = useSelector((state) => state.wallet);
+  const [requesting, setRequesting] = useState(false);
+  const dispatch = useDispatch();
+
   const handlePress = () => {
     onPress({ code, value });
   };
 
   const handleAddPos = () => {
-    navigator.navigate('ADD_POSITION', { token: tokens.find((t) => t.symbol === code) });
+    navigator.navigate('ADD_POSITION', { token });
+  };
+
+  const handleDelete = async () => {
+    setRequesting(true);
+    try {
+      await APIs.post(generateURL(server.DELETE_TOKEN, { walletId: wallet.ID }), {
+        id,
+      });
+
+      // refetch wallet
+      dispatch(WalletSlice.actions.fetchWallet());
+
+      Alert.alert('Delete token successfully!');
+    } catch (err) {
+      Alert.alert('Something went wrong!');
+      console.log(err);
+    }
+    setRequesting(false);
   };
 
   return (
@@ -71,6 +99,7 @@ function CoinCard({
         <TouchableOpacity
           activeOpacity={0.8}
           style={[styles.menuButton, { backgroundColor: colors.mainColor }]}
+          onPress={handleDelete}
         >
           <Icon name="trash-outline" color="#fff" size={24} />
           <Text style={styles.menuButtonText}>Delete</Text>
