@@ -6,6 +6,7 @@ import HomeScreen from '../screens/HomeScreen';
 import AddTokenScreen from '../screens/AddTokenScreen';
 import colors from '../constants/colors';
 import TokenScreen from '../screens/TokenScreen';
+import AddPositionScreen from '../screens/AddPositionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,7 @@ function AppNavigator() {
         options={({ navigation }) => ({
           headerLeft: () => (
             <Button
-              onPress={() => navigation.navigate('HOME')}
+              onPress={() => navigation.goBack()}
               title="Home"
               color={colors.lightBlue}
             />
@@ -39,8 +40,8 @@ function AppNavigator() {
         options={({ navigation }) => ({
           headerLeft: () => (
             <Button
-              onPress={() => navigation.navigate('HOME')}
-              title="< Home"
+              onPress={() => navigation.goBack()}
+              title="<"
               color="white"
             />
           ),
@@ -50,6 +51,20 @@ function AppNavigator() {
           headerStyle: {
             backgroundColor: colors.mainColor,
           },
+        })}
+      />
+      <Stack.Screen
+        name="ADD_POSITION"
+        component={AddPositionScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="<"
+              color={colors.lightBlue}
+            />
+          ),
+          headerTitle: 'Add position',
         })}
       />
     </Stack.Navigator>

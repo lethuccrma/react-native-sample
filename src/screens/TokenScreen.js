@@ -4,6 +4,7 @@ import {
   SafeAreaView, Text, View, StyleSheet, FlatList,
 } from 'react-native';
 import { FAB } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 import PositionCard from '../components/PositionCard';
 import colors from '../constants/colors';
 
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
 });
 
 function CalculateOverviewTransaction(positions) {
-  console.log(positions);
+  // console.log(positions);
   const totalPosition = positions.length;
   let totalAmount = 0;
   positions.forEach((position) => {
@@ -77,7 +78,7 @@ function ShowTokenInfo({ token }) {
         </Text>
         <Text style={{ color: 'white' }}>
           {'Amount : '}
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>{totalAmount}</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>{totalAmount.toFixed(2)}</Text>
         </Text>
       </View>
     </View>
@@ -85,8 +86,11 @@ function ShowTokenInfo({ token }) {
 }
 
 export default function TokenScreen({ route }) {
-  const { token } = route.params;
-  console.log(token);
+  const wallet = useSelector((state) => state.wallet);
+  const { token: { symbol } } = route.params;
+  const token = wallet.tokens.find((t) => t.symbol === symbol);
+  const navigator = useNavigation();
+  // console.log(token);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ ...styles.container, backgroundColor: colors.mainColor }}>
@@ -120,8 +124,8 @@ export default function TokenScreen({ route }) {
           icon="plus"
           style={styles.fab}
           onPress={() => {
-            // navigator.navigate('ADD_TOKEN');
-            console.log('Add position');
+            navigator.navigate('ADD_POSITION', { token });
+            // console.log('Add position');
           }}
         />
       </View>

@@ -114,7 +114,7 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
       </View>
     );
   }
-  console.log(tokens[0].positions);
+  // console.log(tokens[0].positions);
   const navigator = useNavigation();
   return (
     <View flex={1}>

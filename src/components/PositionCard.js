@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
 });
 
 function PositionCard({ position }) {
-  console.log(position);
+//   console.log(position);
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.symbol}>
           {'Amount: '}
-          <Text style={{ ...styles.symbol, color: 'green' }}>{position.amount}</Text>
+          <Text style={{ ...styles.symbol, color: 'green' }}>{position.amount.toFixed(2)}</Text>
         </Text>
         <Text style={styles.value}>
           {`Created time: ${moment(position.createdAt).format('h:mm:ss A, MMMM Do YYYY')}`}
