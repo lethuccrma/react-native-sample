@@ -14,6 +14,7 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import APIs from '../apis';
 import server from '../configs/server';
 import WalletSlice from '../redux/wallet/wallet.slice';
@@ -36,11 +37,11 @@ const styles = StyleSheet.create({
   buttonContainer: { marginTop: 20, alignItems: 'center' },
   button: {
     paddingVertical: 15,
-    marginLeft: 10,
+    margin: 16,
     backgroundColor: colors.mainColor,
-    borderRadius: 10,
+    borderRadius: 25,
     alignItems: 'center',
-    width: 150,
+    width: '100%',
   },
   buttonText: { color: 'white', fontWeight: '700' },
 });
@@ -53,6 +54,7 @@ function AddTokenScreen() {
   const [symbolModalVisible, setSymbolModalVisible] = useState(false);
   const [requesting, setRequesting] = useState(false);
   const wallet = useSelector((state) => state.wallet);
+  const navigator = useNavigation();
 
   const dispatch = useDispatch();
 
@@ -68,6 +70,7 @@ function AddTokenScreen() {
       dispatch(WalletSlice.actions.fetchWallet());
 
       Alert.alert('Token was added successfully');
+      navigator.goBack();
     } catch (err) {
       Alert.alert('Something went wrong :(');
       console.log(err);

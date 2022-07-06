@@ -13,6 +13,7 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import colors from '../constants/colors';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import APIs from '../apis';
@@ -51,6 +52,7 @@ export default function AddPositionScreen({ route }) {
   const wallet = useSelector((state) => state.wallet);
   const tokenSymbol = route.params.token.symbol;
   const tokenName = route.params.token.name;
+  const navigator = useNavigation();
 
   const [amount, setAmount] = useState(0);
   const [requesting, setRequesting] = useState(false);
@@ -67,6 +69,7 @@ export default function AddPositionScreen({ route }) {
       dispatch(WalletSlice.actions.fetchWallet());
 
       Alert.alert('Token was added successfully!');
+      navigator.goBack();
     } catch (err) {
       Alert.alert('Something went wrong!');
       console.log(err);
