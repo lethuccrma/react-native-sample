@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   flatListContainer: {
+    marginTop: 10,
   },
   contentFlatListContainer: {
-    paddingTop: 10,
   },
   fab: {
     position: 'absolute',

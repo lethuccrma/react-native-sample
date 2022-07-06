@@ -5,6 +5,8 @@ import {
 import { Avatar } from 'react-native-paper';
 import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import SwipeRowHold from './SwipeRowHold';
 import colors from '../constants/colors';
 
@@ -47,8 +49,14 @@ const styles = StyleSheet.create({
 function CoinCard({
   code, value, onPress, positions,
 }) {
+  const navigator = useNavigation();
+  const tokens = useSelector((state) => state.wallet.tokens);
   const handlePress = () => {
     onPress({ code, value });
+  };
+
+  const handleAddPos = () => {
+    navigator.navigate('ADD_POSITION', { token: tokens.find((t) => t.symbol === code) });
   };
 
   return (
@@ -73,14 +81,15 @@ function CoinCard({
             styles.menuButton,
             { backgroundColor: colors.secondaryColor },
           ]}
+          onPress={handleAddPos}
         >
           <Icon name="add-circle-outline" color="#fff" size={24} />
           <Text style={styles.menuButtonText}>Add Pos</Text>
         </TouchableOpacity>
       </View>
       <SwipeRowHold swipeThreshold={-150}>
-        <View
-          activeOpacity={0.8}
+        <TouchableOpacity
+          activeOpacity={1}
           onPress={handlePress}
           style={styles.container}
         >
@@ -98,7 +107,7 @@ function CoinCard({
             <Text style={styles.value}>{value}</Text>
           </View>
           <View style={styles.amountContainer}>
-            <Text>Amount:</Text>
+            <Text>Amount</Text>
             <Text style={styles.value}>
               {positions
                 .reduce(
@@ -108,7 +117,7 @@ function CoinCard({
                 .toFixed(2)}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </SwipeRowHold>
     </View>
   );
