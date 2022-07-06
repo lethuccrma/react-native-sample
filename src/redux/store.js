@@ -35,4 +35,6 @@ const { store, persistor } = configStore(initState);
 
 sagaMiddleware.run(rootSaga);
 
+global.reduxStore = store;
+
 export { store, persistor };

@@ -14,18 +14,17 @@ export const walletSlice = createSlice({
   name: 'wallet',
   initialState,
   reducers: {
-    fetchWallet: (state) => {
-      state.fetching = true;
-    },
+    fetchWallet: (state) => ({ ...state, fetching: true }),
     fetchSuccess: (state, action) => ({
       ...action.payload.wallet,
       fetching: false,
       fetchError: '',
     }),
-    fetchError: (state, action) => {
-      state.fetching = false;
-      state.fetchError = action.payload.message;
-    },
+    fetchError: (state, action) => ({
+      ...state,
+      fetching: false,
+      fetchError: action.payload.message,
+    }),
   },
 });
 
