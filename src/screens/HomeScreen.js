@@ -3,10 +3,10 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  FlatList,
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -17,7 +17,6 @@ import CoinCard from '../components/CoinCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import AuthSlice from '../redux/auth/auth.slice';
 import colors from '../constants/colors';
-import TokenScreen from './TokenScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   flatListContainer: {
-    paddingHorizontal: 20,
   },
   contentFlatListContainer: {
     paddingTop: 10,
@@ -125,6 +123,7 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <CoinCard
+            positions={item.positions}
             onPress={() => {
               navigator.navigate('TOKEN_DETAIL', { token: item });
             }}
@@ -165,6 +164,7 @@ function HomeScreen() {
             backgroundColor: '#fff',
             borderTopLeftRadius: 32,
             borderTopRightRadius: 32,
+            paddingTop: 20,
           }}
         >
           <ShowWalletTokens
