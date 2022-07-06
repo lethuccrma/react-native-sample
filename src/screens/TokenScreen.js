@@ -88,7 +88,14 @@ function ShowTokenInfo({ token }) {
 export default function TokenScreen({ route }) {
   const wallet = useSelector((state) => state.wallet);
   const { token: { symbol } } = route.params;
-  const token = wallet.tokens.find((t) => t.symbol === symbol);
+  const token = wallet.tokens.find((t) => t.symbol === symbol) || {
+    positions: [{
+      id: 0,
+      amount: 0,
+      description: '',
+      createdAt: '1970-01-01T00:00:00.000Z',
+    }],
+  };
   const navigator = useNavigation();
   // console.log(token);
   return (
