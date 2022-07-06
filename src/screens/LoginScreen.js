@@ -1,17 +1,16 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   View,
 } from 'react-native';
-import Apis from '../apis';
-import server from '../configs/server';
-import AuthContext from '../contexts/AuthContext';
+import { TextInput } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import colors from '../constants/colors';
+import AuthSlice from '../redux/auth/auth.slice';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,25 +22,22 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '700',
     textAlign: 'center',
+    color: colors.mainColor,
+    letterSpacing: 1.5,
   },
   input: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#777',
     marginTop: 15,
-    padding: 5,
-    fontSize: 14,
-    borderRadius: 5,
   },
   errorText: {
     color: 'red',
     marginTop: 15,
   },
   button: {
-    backgroundColor: '#327de6',
+    backgroundColor: colors.mainColor,
     marginTop: 30,
     padding: 15,
-    borderRadius: 10,
-    width: 150,
+    borderRadius: 25,
+    width: '100%',
     alignSelf: 'center',
   },
   buttonText: {
@@ -53,74 +49,65 @@ const styles = StyleSheet.create({
 });
 
 function LoginScreen() {
-  const { setAuthentication } = useContext(AuthContext);
-  const navigation = useNavigation();
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     username: '',
     password: '',
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleInputsChange = (key) => (text) => {
     setUser((pre) => ({ ...pre, [key]: text }));
   };
 
   const handleLoginButton = async () => {
-    setIsLoading(true);
-    setError(undefined);
-    try {
-      const result = (
-        await Apis.post(server.LOGIN_ENDPOINT, {
-          username: user.username,
-          password: user.password,
-        })
-      ).data;
-      setAuthentication({
-        authenticated: true,
-        expire: result.expire,
-        token: result.token,
-      });
-      navigation.navigate('HOME');
-    } catch (err) {
-      setError(err.response.data.message || err.message);
-    }
-    setIsLoading(false);
+    dispatch(
+      AuthSlice.actions.startLogin({
+        username: user.username,
+        password: user.password,
+      }),
+    );
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.header}>CRYPTO WALLET</Text>
-        <TextInput
-          placeholder="Username"
-          autoCapitalize="none"
-          style={[styles.input, { marginTop: 30 }]}
-          onChangeText={handleInputsChange('username')}
-          value={user.username}
-        />
-        <TextInput
-          placeholder="Password"
-          autoCapitalize="none"
-          style={styles.input}
-          secureTextEntry
-          onChangeText={handleInputsChange('password')}
-          value={user.password}
-        />
-        <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleLoginButton}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator size="small" color="white" />
-          ) : (
-            <Text style={styles.buttonText}>LOGIN</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Text style={styles.header}>CRYPTO WALLET</Text>
+          <TextInput
+            mode="outlined"
+            label="Username"
+            value={user.username}
+            onChangeText={handleInputsChange('username')}
+            style={[styles.input, { marginTop: 30 }]}
+            activeOutlineColor={colors.secondaryColor}
+            autoCapitalize={false}
+          />
+          <TextInput
+            mode="outlined"
+            label="Password"
+            value={user.password}
+            onChangeText={handleInputsChange('password')}
+            style={styles.input}
+            secureTextEntry
+            activeOutlineColor={colors.secondaryColor}
+            autoCapitalize={false}
+          />
+          <Text style={styles.errorText}>{auth.loginError}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleLoginButton}
+            disabled={auth.loginPending}
+          >
+            {auth.loginPending ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.buttonText}>LOGIN</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }
 

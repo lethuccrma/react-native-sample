@@ -1,35 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen';
+import { useSelector } from 'react-redux';
 import LoginScreen from '../screens/LoginScreen';
-import AuthContext from '../contexts/AuthContext';
+import PrivateNavigator from './PrivateNavigator';
 
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
-  const [authentication, setAuthentication] = useState({
-    authenticated: false,
-    token: '',
-    expire: '',
-  });
+  const auth = useSelector((state) => state.auth);
   return (
-    // <NavigationContainer>
-    <AuthContext.Provider value={{ authentication, setAuthentication }}>
-      <Stack.Navigator>
-        {authentication.authenticated && (
+    <Stack.Navigator>
+      {auth.authenticated ? (
         <Stack.Screen
-          name="HOME"
-          component={HomeScreen}
+          name="PRIVATE"
+          component={PrivateNavigator}
           options={{ headerShown: false }}
         />
-        )}
+      ) : (
         <Stack.Screen
           name="LOGIN"
           component={LoginScreen}
           options={{ headerShown: false }}
         />
-      </Stack.Navigator>
-    </AuthContext.Provider>
+      )}
+    </Stack.Navigator>
   );
 }
 
