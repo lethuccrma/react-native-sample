@@ -112,6 +112,7 @@ export default function TokenScreen({ route }) {
               renderItem={({ item }) => (
                 <PositionCard onPress={() => {}} position={item} />
               )}
+              inverted
             />
           ) : (
             <View flex={1} justifyContent="center" alignItems="center">
