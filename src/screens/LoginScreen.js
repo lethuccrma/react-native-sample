@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   View,
+  StatusBar,
 } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
   header: {
     fontSize: 25,
@@ -72,6 +74,7 @@ function LoginScreen() {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
         <View style={styles.container}>
           <Text style={styles.header}>CRYPTO WALLET</Text>
           <TextInput

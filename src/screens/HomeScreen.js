@@ -1,17 +1,19 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
-  FlatList,
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
+  StatusBar,
 } from 'react-native';
 import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CoinCard from '../components/CoinCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
@@ -24,11 +26,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   flatListContainer: {
-    paddingHorizontal: 20,
+    marginTop: 10,
   },
-  contentFlatListContainer: {
-    paddingTop: 10,
-  },
+  contentFlatListContainer: {},
   fab: {
     position: 'absolute',
     margin: 16,
@@ -53,28 +53,14 @@ function ShowWalletInfo({ name, description }) {
   const handleLogout = () => {
     dispatch(AuthSlice.actions.logout());
   };
-
+  const defaultAvatar = '../assets/default-avatar.png';
   return (
     <View style={styles.walletInfo}>
-      <Avatar.Image
-        size={50}
-        source={{
-          uri: `https://ui-avatars.com/api/?${qs.stringify({
-            name,
-            background: 'random',
-          })}`,
-        }}
-      />
+      <Avatar.Image size={50} source={require(defaultAvatar)} />
       <View style={styles.textContainer}>
-        <Text style={{ color: 'white', fontSize: 20 }}>
-          Name:
-          {' '}
-          {name}
-        </Text>
+        <Text style={{ color: 'white', fontSize: 20 }}>{`Name: ${name}`}</Text>
         <Text style={{ color: 'white', fontSize: 16, marginTop: 4 }}>
-          Description:
-          {' '}
-          {description}
+          {`Description: ${description}`}
         </Text>
       </View>
       <TouchableOpacity
@@ -113,6 +99,8 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
       </View>
     );
   }
+  // console.log(tokens[0].positions);
+  const navigator = useNavigation();
   return (
     <View flex={1}>
       <FlatList
@@ -120,8 +108,14 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
         contentContainerStyle={styles.contentFlatListContainer}
         data={tokens}
         keyExtractor={(item) => item.id}
-        // eslint-disable-next-line max-len
-        renderItem={({ item }) => <CoinCard onPress={() => {}} code={item.symbol} value={item.name} />}
+        renderItem={({ item }) => (
+          <CoinCard
+            onPress={() => {
+              navigator.navigate('TOKEN_DETAIL', { token: item });
+            }}
+            token={item}
+          />
+        )}
       />
     </View>
   );
@@ -135,8 +129,14 @@ function HomeScreen() {
   useEffect(() => {
     dispatch(WalletSlice.actions.fetchWallet());
   }, []);
+
+  const totalEvaluation = wallet.tokens
+    .map((token) => token.positions.reduce((pre, pos) => pre + pos.amount, 0))
+    .reduce((pre, cur) => pre + cur, 0);
+
   return (
     <View style={{ flex: 1, backgroundColor: colors.mainColor }}>
+      <StatusBar backgroundColor={colors.mainColor} barStyle="light-content" />
       <View
         style={{
           position: 'absolute',
@@ -148,13 +148,18 @@ function HomeScreen() {
         }}
       />
       <SafeAreaView style={styles.container}>
-        <ShowWalletInfo name={wallet.name} description={wallet.description} />
+        <ShowWalletInfo
+          name={wallet.name}
+          description={wallet.description}
+          evaluation={totalEvaluation}
+        />
         <View
           style={{
             flex: 1,
             backgroundColor: '#fff',
             borderTopLeftRadius: 32,
             borderTopRightRadius: 32,
+            paddingTop: 20,
           }}
         >
           <ShowWalletTokens
