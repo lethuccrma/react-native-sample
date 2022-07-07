@@ -188,6 +188,8 @@ export default function TokenScreen({ route }) {
               contentContainerStyle={styles.contentFlatListContainer}
               data={token.positions}
               keyExtractor={(item) => item.id}
+              refreshing={wallet.fetching}
+              onRefresh={() => { dispatch(WalletSlice.actions.fetchWallet()); }}
               renderItem={({ item }) => (
                 <PositionCard
                   onDelete={showConfirmDelPosDialog}

@@ -102,12 +102,14 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
   if (!tokens || tokens.length === 0) {
     return (
       <View flex={1} justifyContent="center" alignItems="center">
-        <Text>I do not have any token!</Text>
+        <Text>You do not have any token!</Text>
       </View>
     );
   }
   // console.log(tokens[0].positions);
   const navigator = useNavigation();
+  const dispatch = useDispatch();
+  const wallet = useSelector((state) => state.wallet);
   return (
     <View flex={1}>
       <FlatList
@@ -115,6 +117,8 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
         contentContainerStyle={styles.contentFlatListContainer}
         data={tokens}
         keyExtractor={(item) => item.id}
+        refreshing={wallet.fetching}
+        onRefresh={() => { dispatch(WalletSlice.actions.fetchWallet()); }}
         renderItem={({ item }) => (
           <TokenCard
             onPress={() => {
