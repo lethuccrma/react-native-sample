@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet, Text, TouchableOpacity, View, Alert,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -24,18 +22,26 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: 10,
+    justifyContent: 'space-evenly',
   },
   symbol: {
     color: 'black',
     fontWeight: '500',
   },
   value: {
-    marginTop: 5,
     color: '#777',
   },
   amountContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
+    width: 120,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
+  infoContainer: {
+    flexDirection: 'row',
+  },
+  title: {
+    color: 'black',
+    fontWeight: '500',
   },
   menuButton: {
     height: '100%',
@@ -51,12 +57,8 @@ const styles = StyleSheet.create({
   },
 });
 
-function CoinCard({
-  onPress, token,
-}) {
-  const {
-    symbol: code, name: value, positions, id,
-  } = token;
+function CoinCard({ onPress, token }) {
+  const { symbol: code, name: value, positions, id } = token;
   const navigator = useNavigation();
   const wallet = useSelector((state) => state.wallet);
   const [requesting, setRequesting] = useState(false);
@@ -73,9 +75,12 @@ function CoinCard({
   const handleDelete = async () => {
     setRequesting(true);
     try {
-      await APIs.post(generateURL(server.DELETE_TOKEN, { walletId: wallet.ID }), {
-        id,
-      });
+      await APIs.post(
+        generateURL(server.DELETE_TOKEN, { walletId: wallet.ID }),
+        {
+          id,
+        },
+      );
 
       // refetch wallet
       dispatch(WalletSlice.actions.fetchWallet());
@@ -87,6 +92,12 @@ function CoinCard({
     }
     setRequesting(false);
   };
+
+  const totalPosition = (token.positions || []).reduce(
+    (pre, pos) => pre + pos.amount,
+    0,
+  );
+  const totalEvaluation = token.pricePerUnit * totalPosition;
 
   return (
     <View>
@@ -123,26 +134,28 @@ function CoinCard({
           onPress={handlePress}
           style={styles.container}
         >
-          <Avatar.Image
-            size={50}
-            source={
-              tokenIcons[token.symbol]
-            }
-          />
+          <Avatar.Image size={50} source={tokenIcons[token.symbol]} />
           <View style={styles.textContainer}>
             <Text style={styles.symbol}>{code}</Text>
             <Text style={styles.value}>{value}</Text>
           </View>
+          <View style={{ flex: 1 }} />
           <View style={styles.amountContainer}>
-            <Text>Amount</Text>
-            <Text style={styles.value}>
-              {positions
-                .reduce(
-                  (previousValue, currentValue) => previousValue + currentValue.amount,
-                  0,
-                )
-                .toFixed(2)}
-            </Text>
+            <View style={styles.infoContainer}>
+              <Text style={styles.title}>Amt: </Text>
+              <Text style={[styles.value, { color: colors.blue, fontWeight: '500' }]}>
+                {totalPosition.toFixed(2)}
+              </Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={styles.title}>Evl: </Text>
+              <Text style={[styles.value, { color: colors.darkGreen, fontWeight: '500' }]}>
+                {totalEvaluation.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })}
+              </Text>
+            </View>
           </View>
         </TouchableOpacity>
       </SwipeRowHold>

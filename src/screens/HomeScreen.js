@@ -28,8 +28,7 @@ const styles = StyleSheet.create({
   flatListContainer: {
     marginTop: 10,
   },
-  contentFlatListContainer: {
-  },
+  contentFlatListContainer: {},
   fab: {
     position: 'absolute',
     margin: 16,
@@ -57,20 +56,11 @@ function ShowWalletInfo({ name, description }) {
   const defaultAvatar = '../assets/default-avatar.png';
   return (
     <View style={styles.walletInfo}>
-      <Avatar.Image
-        size={50}
-        source={require(defaultAvatar)}
-      />
+      <Avatar.Image size={50} source={require(defaultAvatar)} />
       <View style={styles.textContainer}>
-        <Text style={{ color: 'white', fontSize: 20 }}>
-          Name:
-          {' '}
-          {name}
-        </Text>
+        <Text style={{ color: 'white', fontSize: 20 }}>{`Name: ${name}`}</Text>
         <Text style={{ color: 'white', fontSize: 16, marginTop: 4 }}>
-          Description:
-          {' '}
-          {description}
+          {`Description: ${description}`}
         </Text>
       </View>
       <TouchableOpacity
@@ -139,6 +129,11 @@ function HomeScreen() {
   useEffect(() => {
     dispatch(WalletSlice.actions.fetchWallet());
   }, []);
+
+  const totalEvaluation = wallet.tokens
+    .map((token) => token.positions.reduce((pre, pos) => pre + pos.amount, 0))
+    .reduce((pre, cur) => pre + cur, 0);
+
   return (
     <View style={{ flex: 1, backgroundColor: colors.mainColor }}>
       <StatusBar backgroundColor={colors.mainColor} barStyle="light-content" />
@@ -153,7 +148,11 @@ function HomeScreen() {
         }}
       />
       <SafeAreaView style={styles.container}>
-        <ShowWalletInfo name={wallet.name} description={wallet.description} />
+        <ShowWalletInfo
+          name={wallet.name}
+          description={wallet.description}
+          evaluation={totalEvaluation}
+        />
         <View
           style={{
             flex: 1,
