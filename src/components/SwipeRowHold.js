@@ -6,6 +6,7 @@
 
 import React, { useRef } from 'react';
 import {
+  gestureHandlerRootHOC,
   PanGestureHandler,
   State as GestureState,
 } from 'react-native-gesture-handler';
@@ -29,9 +30,9 @@ const {
   Clock,
 } = Animated;
 
-function SwipeRowHold({
+const SwipeRowHold = gestureHandlerRootHOC(({
   swipeThreshold, style, children,
-}) {
+}) => {
   const clock = useRef(new Clock());
   const gestureState = useRef(new Value(GestureState.UNDETERMINED));
   const animState = useRef({
@@ -144,6 +145,6 @@ function SwipeRowHold({
       </Animated.View>
     </PanGestureHandler>
   );
-}
+});
 
 export default SwipeRowHold;

@@ -104,15 +104,15 @@ function ShowTokenInfo({ token }) {
         justifyContent: 'space-evenly' }}
       >
         <Text style={{ color: 'white' }}>
-          Amount     :
+          {'Amount     : '}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
             {totalAmount.toFixed(2)}
           </Text>
         </Text>
         <Text style={{ color: 'white' }}>
-          Evaluation :
+          {'Evaluation : '}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {totalEvaluation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+            {parseFloat(totalEvaluation.toFixed(2)).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
           </Text>
         </Text>
 

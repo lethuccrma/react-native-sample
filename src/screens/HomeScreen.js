@@ -15,7 +15,7 @@ import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import CoinCard from '../components/CoinCard';
+import TokenCard from '../components/TokenCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import AuthSlice from '../redux/auth/auth.slice';
 import colors from '../constants/colors';
@@ -109,7 +109,7 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
         data={tokens}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <CoinCard
+          <TokenCard
             onPress={() => {
               navigator.navigate('TOKEN_DETAIL', { token: item });
             }}

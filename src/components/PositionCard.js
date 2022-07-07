@@ -48,7 +48,7 @@ function PositionCard({ position, onDelete, pricePerUnit }) {
           <Text style={styles.symbol}>
             {'Evl: '}
             <Text style={{ ...styles.symbol, color: 'green' }}>
-              {(position.amount * pricePerUnit).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+              {parseFloat((position.amount * pricePerUnit).toFixed(2)).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
             </Text>
           </Text>
         </View>

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function CoinCard({ onPress, token }) {
+function TokenCard({ onPress, token }) {
   const { symbol: code, name: value, positions, id } = token;
   const navigator = useNavigation();
   const wallet = useSelector((state) => state.wallet);
@@ -150,7 +150,7 @@ function CoinCard({ onPress, token }) {
             <View style={styles.infoContainer}>
               <Text style={styles.title}>Evl: </Text>
               <Text style={[styles.value, { color: colors.darkGreen, fontWeight: '500' }]}>
-                {totalEvaluation.toLocaleString('en-US', {
+                {parseFloat(totalEvaluation.toFixed(2)).toLocaleString('en-US', {
                   style: 'currency',
                   currency: 'USD',
                 })}
@@ -163,4 +163,4 @@ function CoinCard({ onPress, token }) {
   );
 }
 
-export default CoinCard;
+export default TokenCard;
