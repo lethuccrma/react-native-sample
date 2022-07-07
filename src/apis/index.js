@@ -29,4 +29,11 @@ APIs.interceptors.response.use(responseHandler, errorHandler);
 
 APIs.interceptors.request.use(requestHandler, errorHandler);
 
+export const CryptoPriceAPI = axios.create({
+  baseURL: server.CRYPTO_PRICE_ROOT_ENDPOINT,
+  headers: {
+    Accept: 'application/json',
+  },
+});
+
 export default APIs;

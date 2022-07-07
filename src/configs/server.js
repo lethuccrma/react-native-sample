@@ -12,4 +12,6 @@ export default {
   ADD_POSITION: '/api/v1/wallet/{{walletId}}/{{tokenSymbol}}/position',
   // api/v1/wallet/<WALLET_ID>/<TOKEN_SYMBOL>/delete
   DELETE_POSITION: '/api/v1/wallet/{{walletId}}/{{tokenSymbol}}/position/delete',
+
+  CRYPTO_PRICE_ROOT_ENDPOINT: 'https://min-api.cryptocompare.com/data/pricemulti',
 };
