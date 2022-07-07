@@ -1,7 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import qs from 'qs';
 
 import WalletSlice from './wallet.slice';
-import APIs from '../../apis';
+import APIs, { CryptoPriceAPI } from '../../apis';
 import server from '../../configs/server';
 
 function* handleFetchWallet() {
@@ -9,6 +10,21 @@ function* handleFetchWallet() {
     // const response = await APIs.get(server.GET_WALLET);
     const response = yield call(APIs.get, server.GET_WALLET);
     const { wallet } = response.data || {};
+
+    const { tokens } = wallet;
+    if (tokens && tokens.length > 0) {
+      const priceResponses = yield call(CryptoPriceAPI.get, `${server.CRYPTO_PRICE_ROOT_ENDPOINT}?${qs.stringify({
+        fsyms: tokens.map((t) => t.symbol).join(','),
+        tsyms: 'USD',
+      })}`);
+      const tokenPrices = priceResponses.data;
+
+      tokens.forEach((token) => {
+        // assign directly to wallet
+        // eslint-disable-next-line no-param-reassign
+        token.pricePerUnit = (tokenPrices[token.symbol] || { USD: 0 }).USD;
+      });
+    }
 
     yield put(WalletSlice.actions.fetchSuccess({ wallet }));
   } catch (err) {
