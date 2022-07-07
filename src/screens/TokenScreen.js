@@ -8,7 +8,7 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import { Button, Dialog, FAB, Paragraph } from 'react-native-paper';
+import { Button, Dialog, FAB, Paragraph, Avatar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import APIs from '../apis';
 import PositionCard from '../components/PositionCard';
@@ -16,6 +16,7 @@ import server from '../configs/server';
 import colors from '../constants/colors';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import { generateURL } from '../utils/string';
+import tokenIcons from '../assets/token-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   tokenInfoContainer: {
     flex: 1,
     maxHeight: '10%',
-    margin: 10,
+    marginLeft: 16,
     flexDirection: 'row',
     backgroundColor: 'transparent',
     // borderColor: 'blue',
@@ -56,21 +57,36 @@ const styles = StyleSheet.create({
 
 function CalculateOverviewTransaction(positions) {
   // console.log(positions);
-  const totalPosition = positions.length;
   let totalAmount = 0;
   positions.forEach((position) => {
     totalAmount += position.amount;
   });
-  return { totalPosition, totalAmount };
+  return { totalAmount };
 }
 
 function ShowTokenInfo({ token }) {
-  const { totalPosition, totalAmount } = CalculateOverviewTransaction(
+  const { totalAmount } = CalculateOverviewTransaction(
     token.positions,
   );
+  const totalEvaluation = totalAmount * token.pricePerUnit;
   return (
     <View style={{ ...styles.tokenInfoContainer }}>
-      <View style={{ flex: 1, justifyContent: 'space-evenly', marginLeft: 32 }}>
+      <View style={{
+        justifyContent: 'center' }}
+      >
+        <Avatar.Image
+          size={50}
+          source={
+              tokenIcons[token.symbol]
+            }
+        />
+      </View>
+
+      <View style={{
+        maxWidth: '40%',
+        justifyContent: 'space-evenly',
+        marginHorizontal: 10 }}
+      >
         <Text style={{ color: 'white' }}>
           {'Code : '}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
@@ -84,19 +100,22 @@ function ShowTokenInfo({ token }) {
           </Text>
         </Text>
       </View>
-      <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
+      <View style={{ flex: 1,
+        justifyContent: 'space-evenly' }}
+      >
         <Text style={{ color: 'white' }}>
-          {'Position : '}
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {totalPosition}
-          </Text>
-        </Text>
-        <Text style={{ color: 'white' }}>
-          {'Amount : '}
+          Amount     :
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
             {totalAmount.toFixed(2)}
           </Text>
         </Text>
+        <Text style={{ color: 'white' }}>
+          Evaluation :
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>
+            {totalEvaluation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+          </Text>
+        </Text>
+
       </View>
     </View>
   );
@@ -173,6 +192,7 @@ export default function TokenScreen({ route }) {
                 <PositionCard
                   onDelete={showConfirmDelPosDialog}
                   position={item}
+                  pricePerUnit={token.pricePerUnit}
                 />
               )}
             />
