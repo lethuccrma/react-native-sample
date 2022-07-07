@@ -13,6 +13,7 @@ import APIs from '../apis';
 import { generateURL } from '../utils/string';
 import server from '../configs/server';
 import WalletSlice from '../redux/wallet/wallet.slice';
+import tokenIcons from '../assets/token-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -124,12 +125,9 @@ function CoinCard({
         >
           <Avatar.Image
             size={50}
-            source={{
-              uri: `https://ui-avatars.com/api/?${qs.stringify({
-                name: value,
-                background: 'random',
-              })}`,
-            }}
+            source={
+              tokenIcons[token.symbol]
+            }
           />
           <View style={styles.textContainer}>
             <Text style={styles.symbol}>{code}</Text>

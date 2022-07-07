@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 import React, { useEffect } from 'react';
 import {
   SafeAreaView,
@@ -12,7 +14,6 @@ import {
 import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CoinCard from '../components/CoinCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
@@ -53,17 +54,12 @@ function ShowWalletInfo({ name, description }) {
   const handleLogout = () => {
     dispatch(AuthSlice.actions.logout());
   };
-
+  const defaultAvatar = '../assets/default-avatar.png';
   return (
     <View style={styles.walletInfo}>
       <Avatar.Image
         size={50}
-        source={{
-          uri: `https://ui-avatars.com/api/?${qs.stringify({
-            name,
-            background: 'random',
-          })}`,
-        }}
+        source={require(defaultAvatar)}
       />
       <View style={styles.textContainer}>
         <Text style={{ color: 'white', fontSize: 20 }}>
