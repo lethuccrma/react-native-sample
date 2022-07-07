@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
+  StatusBar,
 } from 'react-native';
 import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -144,6 +145,7 @@ function HomeScreen() {
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor: colors.mainColor }}>
+      <StatusBar backgroundColor={colors.mainColor} barStyle="light-content" />
       <View
         style={{
           position: 'absolute',

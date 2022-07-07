@@ -7,6 +7,7 @@ import {
   Text,
   View,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {
   TextInput,
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: 'white',
   },
   inputContainer: {
     marginTop: 20,
@@ -82,6 +84,7 @@ export default function AddPositionScreen({ route }) {
 
   return (
     <SafeAreaView flex={1}>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
       <View style={styles.container}>
         <TextInput
           mode="outlined"
