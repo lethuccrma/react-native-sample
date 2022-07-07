@@ -11,5 +11,5 @@ export default {
   // api/v1/wallet/<WALLET_ID>/<TOKEN_SYMBOL>/position
   ADD_POSITION: '/api/v1/wallet/{{walletId}}/{{tokenSymbol}}/position',
   // api/v1/wallet/<WALLET_ID>/<TOKEN_SYMBOL>/delete
-  DELETE_POSITION: '/api/v1/wallet/{{walletId}}/{{tokenSymbol}}/delete',
+  DELETE_POSITION: '/api/v1/wallet/{{walletId}}/{{tokenSymbol}}/position/delete',
 };
