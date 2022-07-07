@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Alert, Platform } from 'react
 import { Avatar } from 'react-native-paper';
 import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -165,22 +166,22 @@ function TokenCard({ onPress, token }) {
           <View style={{ flex: 1 }} />
           <View style={styles.amountContainer}>
             <View style={styles.infoContainer}>
-              <Text style={styles.title}>Amt: </Text>
+              <MIcon name="database-outline" size={18} color="#000" />
               <Text
                 style={[
                   styles.value,
-                  { color: colors.blue, fontWeight: '500' },
+                  { color: colors.blue, fontWeight: '500', marginLeft: 4 },
                 ]}
               >
                 {convertToAmountFormat(totalPosition)}
               </Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={styles.title}>Evl: </Text>
+              <MIcon name="cash" size={18} color="#000" />
               <Text
                 style={[
                   styles.value,
-                  { color: colors.darkGreen, fontWeight: '500' },
+                  { color: colors.darkGreen, fontWeight: '500', marginLeft: 4 },
                 ]}
               >
                 {convertToCurrencyFormat(totalEvaluation)}

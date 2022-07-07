@@ -15,10 +15,12 @@ import { FAB, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import moment from 'moment';
 import TokenCard from '../components/TokenCard';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import AuthSlice from '../redux/auth/auth.slice';
 import colors from '../constants/colors';
+import { convertToCurrencyFormat } from '../utils/string';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function ShowWalletInfo({ name, description, evaluation }) {
+function ShowWalletInfo({ name, description, evaluation, updatedAt }) {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(AuthSlice.actions.logout());
@@ -63,11 +65,20 @@ function ShowWalletInfo({ name, description, evaluation }) {
         <Text style={{ color: 'white', fontSize: 16, marginTop: 4 }}>
           {`Description: ${description}`}
         </Text>
-        <Text style={{ color: 'white', fontSize: 16, marginTop: 12, fontWeight: 'bold' }}>
-          {`Total evaluation: ${parseFloat(evaluation.toFixed(2)).toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          })}`}
+        <Text
+          style={{
+            color: 'white',
+            fontSize: 16,
+            marginTop: 12,
+            fontWeight: 'bold',
+          }}
+        >
+          {`Total evaluation: ${convertToCurrencyFormat(evaluation)}`}
+        </Text>
+        <Text style={{ color: 'white', fontSize: 13, marginTop: 3 }}>
+          {`Last Updated: ${(updatedAt || moment()).format(
+            'HH:mm:ss, MMMM Do YYYY',
+          )}`}
         </Text>
       </View>
       <TouchableOpacity
@@ -118,7 +129,9 @@ function ShowWalletTokens({ fetching, fetchError, tokens }) {
         data={tokens}
         keyExtractor={(item) => item.id}
         refreshing={wallet.fetching}
-        onRefresh={() => { dispatch(WalletSlice.actions.fetchWallet()); }}
+        onRefresh={() => {
+          dispatch(WalletSlice.actions.fetchWallet());
+        }}
         renderItem={({ item }) => (
           <TokenCard
             onPress={() => {
@@ -142,7 +155,10 @@ function HomeScreen() {
   }, []);
 
   const totalEvaluation = wallet.tokens
-    .map((token) => token.positions.reduce((pre, pos) => pre + pos.amount, 0) * token.pricePerUnit)
+    .map(
+      (token) => token.positions.reduce((pre, pos) => pre + pos.amount, 0)
+        * token.pricePerUnit,
+    )
     .reduce((pre, cur) => pre + cur, 0);
 
   return (
@@ -163,6 +179,7 @@ function HomeScreen() {
           name={wallet.name}
           description={wallet.description}
           evaluation={totalEvaluation}
+          updatedAt={wallet.updatedAt}
         />
         <View
           style={{

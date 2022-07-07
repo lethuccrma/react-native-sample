@@ -19,11 +19,19 @@ export function generateURL(input, data) {
 }
 
 export function convertToCurrencyFormat(number) {
-  return parseFloat(number.toFixed(2)).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
+  const originalStr = `${number.toFixed(2)}`;
+  let decimalNumber = Number.parseInt(originalStr.split('.')[0], 10);
+  const numberPart = [];
+  while (decimalNumber > 0) {
+    numberPart.push(parseInt(decimalNumber % 1000, 10));
+    decimalNumber = parseInt(decimalNumber / 1000, 10);
+  }
+  if (numberPart.length === 0) {
+    numberPart.push(0);
+  }
+  const answer = `$${numberPart.reverse().join(',')}.${originalStr.split('.')[1]}`;
+  return answer;
 }
 export function convertToAmountFormat(number) {
-  return number.toFixed(2);
+  return number;
 }
