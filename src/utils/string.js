@@ -17,3 +17,13 @@ export function generateURL(input, data) {
   }
   return result.replace(/\{\{[a-zA-Z0-9]+}}/g, '');
 }
+
+export function convertToCurrencyFormat(number) {
+  return parseFloat(number.toFixed(2)).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+}
+export function convertToAmountFormat(number) {
+  return number.toFixed(2);
+}

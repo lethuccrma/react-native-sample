@@ -15,7 +15,7 @@ import PositionCard from '../components/PositionCard';
 import server from '../configs/server';
 import colors from '../constants/colors';
 import WalletSlice from '../redux/wallet/wallet.slice';
-import { generateURL } from '../utils/string';
+import { convertToAmountFormat, convertToCurrencyFormat, generateURL } from '../utils/string';
 import tokenIcons from '../assets/token-icons';
 
 const styles = StyleSheet.create({
@@ -106,13 +106,13 @@ function ShowTokenInfo({ token }) {
         <Text style={{ color: 'white' }}>
           {'Amount     : '}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {totalAmount.toFixed(2)}
+            {convertToAmountFormat(totalAmount)}
           </Text>
         </Text>
         <Text style={{ color: 'white' }}>
           {'Evaluation : '}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {parseFloat(totalEvaluation.toFixed(2)).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+            {convertToCurrencyFormat(totalEvaluation)}
           </Text>
         </Text>
 

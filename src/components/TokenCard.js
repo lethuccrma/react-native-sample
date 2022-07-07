@@ -9,7 +9,7 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import SwipeRowHold from './SwipeRowHold';
 import colors from '../constants/colors';
 import APIs from '../apis';
-import { generateURL } from '../utils/string';
+import { convertToAmountFormat, convertToCurrencyFormat, generateURL } from '../utils/string';
 import server from '../configs/server';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import tokenIcons from '../assets/token-icons';
@@ -153,10 +153,7 @@ function TokenCard({ onPress, token }) {
                   <Icon name="ios-pricetag-outline" color="#fff" />
                   <Text style={styles.symbol}>{' '}</Text>
                   <Text style={{ color: 'white', fontSize: 12, fontWeight: '500' }}>
-                    {parseFloat(token.pricePerUnit.toFixed(2)).toLocaleString('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                    })}
+                    {convertToCurrencyFormat(token.pricePerUnit)}
 
                   </Text>
                   <Text style={styles.symbol}>{' '}</Text>
@@ -175,7 +172,7 @@ function TokenCard({ onPress, token }) {
                   { color: colors.blue, fontWeight: '500' },
                 ]}
               >
-                {totalPosition.toFixed(2)}
+                {convertToAmountFormat(totalPosition)}
               </Text>
             </View>
             <View style={styles.infoContainer}>
@@ -186,13 +183,7 @@ function TokenCard({ onPress, token }) {
                   { color: colors.darkGreen, fontWeight: '500' },
                 ]}
               >
-                {parseFloat(totalEvaluation.toFixed(2)).toLocaleString(
-                  'en-US',
-                  {
-                    style: 'currency',
-                    currency: 'USD',
-                  },
-                )}
+                {convertToCurrencyFormat(totalEvaluation)}
               </Text>
             </View>
           </View>
