@@ -198,7 +198,7 @@ export default function TokenScreen({ route }) {
             />
           ) : (
             <View flex={1} justifyContent="center" alignItems="center">
-              <Text>I do not have any position!</Text>
+              <Text>You do not have any position!</Text>
             </View>
           )}
         </View>

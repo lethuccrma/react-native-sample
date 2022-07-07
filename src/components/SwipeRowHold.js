@@ -30,9 +30,9 @@ const {
   Clock,
 } = Animated;
 
-const SwipeRowHold = gestureHandlerRootHOC(({
+function SwipeRowHold({
   swipeThreshold, style, children,
-}) => {
+}) {
   const clock = useRef(new Clock());
   const gestureState = useRef(new Value(GestureState.UNDETERMINED));
   const animState = useRef({
@@ -145,6 +145,6 @@ const SwipeRowHold = gestureHandlerRootHOC(({
       </Animated.View>
     </PanGestureHandler>
   );
-});
+}
 
 export default SwipeRowHold;

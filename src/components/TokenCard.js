@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Alert, Platform } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import SwipeRowHold from './SwipeRowHold';
 import colors from '../constants/colors';
 import APIs from '../apis';
@@ -99,8 +100,10 @@ function TokenCard({ onPress, token }) {
   );
   const totalEvaluation = token.pricePerUnit * totalPosition;
 
+  const WrapContainer = Platform.OS === 'ios' ? View : gestureHandlerRootHOC(View);
+
   return (
-    <View>
+    <WrapContainer>
       <View
         style={{
           ...StyleSheet.absoluteFillObject,
@@ -195,7 +198,7 @@ function TokenCard({ onPress, token }) {
           </View>
         </TouchableOpacity>
       </SwipeRowHold>
-    </View>
+    </WrapContainer>
   );
 }
 
