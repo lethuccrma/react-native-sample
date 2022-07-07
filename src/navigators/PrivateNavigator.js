@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button } from 'react-native';
+import { StatusBar } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeScreen from '../screens/HomeScreen';
 import AddTokenScreen from '../screens/AddTokenScreen';
 import colors from '../constants/colors';
@@ -25,13 +26,15 @@ function AppNavigator() {
         component={AddTokenScreen}
         options={({ navigation }) => ({
           headerLeft: () => (
-            <Button
+            <Icon.Button
+              name="arrow-back-ios"
+              color="black"
+              backgroundColor="white"
               onPress={() => navigation.goBack()}
-              title="<"
-              color={colors.lightBlue}
             />
           ),
           headerTitle: 'Add Token',
+          headerTitleAlign: 'center',
         })}
       />
       <Stack.Screen
@@ -39,13 +42,15 @@ function AppNavigator() {
         component={TokenScreen}
         options={({ navigation }) => ({
           headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="<"
+            <Icon.Button
+              name="arrow-back-ios"
               color="white"
+              backgroundColor={colors.mainColor}
+              onPress={() => navigation.goBack()}
             />
           ),
           headerTitle: 'Token Detail',
+          headerTitleAlign: 'center',
           headerTintColor: 'white',
           headerShadowVisible: false,
           headerStyle: {
@@ -58,13 +63,15 @@ function AppNavigator() {
         component={AddPositionScreen}
         options={({ navigation }) => ({
           headerLeft: () => (
-            <Button
+            <Icon.Button
+              name="arrow-back-ios"
+              color="black"
+              backgroundColor="white"
               onPress={() => navigation.goBack()}
-              title="<"
-              color={colors.lightBlue}
             />
           ),
           headerTitle: 'Add position',
+          headerTitleAlign: 'center',
         })}
       />
     </Stack.Navigator>

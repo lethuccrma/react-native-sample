@@ -7,6 +7,7 @@ import {
   Text,
   View,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {
   TextInput,
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: 'white',
   },
   inputContainer: {
     marginTop: 20,
@@ -96,6 +98,7 @@ function AddTokenScreen() {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
       <View style={styles.container}>
         <TextInput
           mode="outlined"
