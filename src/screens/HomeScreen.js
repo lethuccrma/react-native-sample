@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     borderColor: colors.mainColor,
     color: 'white',
     flexDirection: 'row',
-    padding: 20,
+    alignItems: 'center',
+    padding: 16,
   },
   textContainer: {
     flex: 1,
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function ShowWalletInfo({ name, description }) {
+function ShowWalletInfo({ name, description, evaluation }) {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(AuthSlice.actions.logout());
@@ -56,11 +57,17 @@ function ShowWalletInfo({ name, description }) {
   const defaultAvatar = '../assets/default-avatar.png';
   return (
     <View style={styles.walletInfo}>
-      <Avatar.Image size={50} source={require(defaultAvatar)} />
+      <Avatar.Image size={77} source={require(defaultAvatar)} />
       <View style={styles.textContainer}>
         <Text style={{ color: 'white', fontSize: 20 }}>{`Name: ${name}`}</Text>
         <Text style={{ color: 'white', fontSize: 16, marginTop: 4 }}>
           {`Description: ${description}`}
+        </Text>
+        <Text style={{ color: 'white', fontSize: 16, marginTop: 12, fontWeight: 'bold' }}>
+          {`Total evaluation: ${parseFloat(evaluation.toFixed(2)).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })}`}
         </Text>
       </View>
       <TouchableOpacity
@@ -131,7 +138,7 @@ function HomeScreen() {
   }, []);
 
   const totalEvaluation = wallet.tokens
-    .map((token) => token.positions.reduce((pre, pos) => pre + pos.amount, 0))
+    .map((token) => token.positions.reduce((pre, pos) => pre + pos.amount, 0) * token.pricePerUnit)
     .reduce((pre, cur) => pre + cur, 0);
 
   return (

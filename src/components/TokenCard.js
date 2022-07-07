@@ -136,24 +136,60 @@ function TokenCard({ onPress, token }) {
         >
           <Avatar.Image size={50} source={tokenIcons[token.symbol]} />
           <View style={styles.textContainer}>
-            <Text style={styles.symbol}>{code}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.symbol}>{code}</Text>
+              <Text style={styles.symbol}>{'  '}</Text>
+              <View
+                style={{
+                  backgroundColor: '#49be25',
+                  borderRadius: 10,
+                  padding: 1,
+                }}
+              >
+                <Text>
+                  <Icon name="ios-pricetag-outline" color="#fff" />
+                  <Text style={styles.symbol}>{' '}</Text>
+                  <Text style={{ color: 'white', fontSize: 12, fontWeight: '500' }}>
+                    {parseFloat(token.pricePerUnit.toFixed(2)).toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                    })}
+
+                  </Text>
+                  <Text style={styles.symbol}>{' '}</Text>
+                </Text>
+              </View>
+            </View>
             <Text style={styles.value}>{value}</Text>
           </View>
           <View style={{ flex: 1 }} />
           <View style={styles.amountContainer}>
             <View style={styles.infoContainer}>
               <Text style={styles.title}>Amt: </Text>
-              <Text style={[styles.value, { color: colors.blue, fontWeight: '500' }]}>
+              <Text
+                style={[
+                  styles.value,
+                  { color: colors.blue, fontWeight: '500' },
+                ]}
+              >
                 {totalPosition.toFixed(2)}
               </Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.title}>Evl: </Text>
-              <Text style={[styles.value, { color: colors.darkGreen, fontWeight: '500' }]}>
-                {parseFloat(totalEvaluation.toFixed(2)).toLocaleString('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                })}
+              <Text
+                style={[
+                  styles.value,
+                  { color: colors.darkGreen, fontWeight: '500' },
+                ]}
+              >
+                {parseFloat(totalEvaluation.toFixed(2)).toLocaleString(
+                  'en-US',
+                  {
+                    style: 'currency',
+                    currency: 'USD',
+                  },
+                )}
               </Text>
             </View>
           </View>
