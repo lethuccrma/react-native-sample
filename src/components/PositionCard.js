@@ -1,8 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import moment from 'moment';
+import { convertToAmountFormat, convertToCurrencyFormat } from '../utils/string';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,23 +41,23 @@ function PositionCard({ position, onDelete, pricePerUnit }) {
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <View flex={1} style={{ flexDirection: 'row' }}>
-          <Text style={styles.symbol}>
-            {'Amt: '}
-            <Text style={{ ...styles.symbol, color: '#00f' }}>
-              {position.amount.toFixed(2)}
+          <View style={[styles.symbol, { flexDirection: 'row', alignItems: 'center' }]}>
+            <MIcon name="database-outline" size={18} color="#000" />
+            <Text style={{ ...styles.symbol, color: '#00f', margin: 4 }}>
+              {convertToAmountFormat(position.amount)}
             </Text>
-          </Text>
-          <Text style={styles.symbol}>
-            {'Evl: '}
-            <Text style={{ ...styles.symbol, color: 'green' }}>
-              {(position.amount * pricePerUnit).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+          </View>
+          <View style={[styles.symbol, { flexDirection: 'row', alignItems: 'center' }]}>
+            <MIcon name="cash" size={25} color="#000" />
+            <Text style={{ ...styles.symbol, color: 'green', margin: 4 }}>
+              {convertToCurrencyFormat(position.amount * pricePerUnit)}
             </Text>
-          </Text>
+          </View>
         </View>
 
         <Text style={styles.value}>
           {`Created time: ${moment(position.createdAt).format(
-            'hh:mm:ss A, MMMM Do YYYY',
+            'HH:mm:ss, MMMM Do YYYY',
           )}`}
         </Text>
       </View>

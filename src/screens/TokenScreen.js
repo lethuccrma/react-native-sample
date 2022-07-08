@@ -15,7 +15,7 @@ import PositionCard from '../components/PositionCard';
 import server from '../configs/server';
 import colors from '../constants/colors';
 import WalletSlice from '../redux/wallet/wallet.slice';
-import { generateURL } from '../utils/string';
+import { convertToAmountFormat, convertToCurrencyFormat, generateURL } from '../utils/string';
 import tokenIcons from '../assets/token-icons';
 
 const styles = StyleSheet.create({
@@ -104,15 +104,15 @@ function ShowTokenInfo({ token }) {
         justifyContent: 'space-evenly' }}
       >
         <Text style={{ color: 'white' }}>
-          Amount     :
+          {'Amount     : '}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {totalAmount.toFixed(2)}
+            {convertToAmountFormat(totalAmount)}
           </Text>
         </Text>
         <Text style={{ color: 'white' }}>
-          Evaluation :
+          {'Evaluation : '}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {totalEvaluation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+            {convertToCurrencyFormat(totalEvaluation)}
           </Text>
         </Text>
 
@@ -188,6 +188,8 @@ export default function TokenScreen({ route }) {
               contentContainerStyle={styles.contentFlatListContainer}
               data={token.positions}
               keyExtractor={(item) => item.id}
+              refreshing={wallet.fetching}
+              onRefresh={() => { dispatch(WalletSlice.actions.fetchWallet()); }}
               renderItem={({ item }) => (
                 <PositionCard
                   onDelete={showConfirmDelPosDialog}
@@ -198,7 +200,7 @@ export default function TokenScreen({ route }) {
             />
           ) : (
             <View flex={1} justifyContent="center" alignItems="center">
-              <Text>I do not have any position!</Text>
+              <Text>You do not have any position!</Text>
             </View>
           )}
         </View>

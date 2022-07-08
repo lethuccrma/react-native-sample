@@ -6,6 +6,7 @@
 
 import React, { useRef } from 'react';
 import {
+  gestureHandlerRootHOC,
   PanGestureHandler,
   State as GestureState,
 } from 'react-native-gesture-handler';

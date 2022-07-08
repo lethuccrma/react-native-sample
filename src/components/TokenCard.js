@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Alert, Platform } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import qs from 'qs';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import SwipeRowHold from './SwipeRowHold';
 import colors from '../constants/colors';
 import APIs from '../apis';
-import { generateURL } from '../utils/string';
+import { convertToAmountFormat, convertToCurrencyFormat, generateURL } from '../utils/string';
 import server from '../configs/server';
 import WalletSlice from '../redux/wallet/wallet.slice';
 import tokenIcons from '../assets/token-icons';
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function CoinCard({ onPress, token }) {
+function TokenCard({ onPress, token }) {
   const { symbol: code, name: value, positions, id } = token;
   const navigator = useNavigation();
   const wallet = useSelector((state) => state.wallet);
@@ -99,8 +101,10 @@ function CoinCard({ onPress, token }) {
   );
   const totalEvaluation = token.pricePerUnit * totalPosition;
 
+  const WrapContainer = Platform.OS === 'ios' ? View : gestureHandlerRootHOC(View);
+
   return (
-    <View>
+    <WrapContainer>
       <View
         style={{
           ...StyleSheet.absoluteFillObject,
@@ -136,31 +140,58 @@ function CoinCard({ onPress, token }) {
         >
           <Avatar.Image size={50} source={tokenIcons[token.symbol]} />
           <View style={styles.textContainer}>
-            <Text style={styles.symbol}>{code}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.symbol}>{code}</Text>
+              <Text style={styles.symbol}>{'  '}</Text>
+              <View
+                style={{
+                  backgroundColor: '#49be25',
+                  borderRadius: 10,
+                  padding: 1,
+                }}
+              >
+                <Text>
+                  <Icon name="ios-pricetag-outline" color="#fff" />
+                  <Text style={styles.symbol}>{' '}</Text>
+                  <Text style={{ color: 'white', fontSize: 12, fontWeight: '500' }}>
+                    {convertToCurrencyFormat(token.pricePerUnit)}
+
+                  </Text>
+                  <Text style={styles.symbol}>{' '}</Text>
+                </Text>
+              </View>
+            </View>
             <Text style={styles.value}>{value}</Text>
           </View>
           <View style={{ flex: 1 }} />
           <View style={styles.amountContainer}>
             <View style={styles.infoContainer}>
-              <Text style={styles.title}>Amt: </Text>
-              <Text style={[styles.value, { color: colors.blue, fontWeight: '500' }]}>
-                {totalPosition.toFixed(2)}
+              <MIcon name="database-outline" size={18} color="#000" />
+              <Text
+                style={[
+                  styles.value,
+                  { color: colors.blue, fontWeight: '500', marginLeft: 4 },
+                ]}
+              >
+                {convertToAmountFormat(totalPosition)}
               </Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={styles.title}>Evl: </Text>
-              <Text style={[styles.value, { color: colors.darkGreen, fontWeight: '500' }]}>
-                {totalEvaluation.toLocaleString('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                })}
+              <MIcon name="cash" size={18} color="#000" />
+              <Text
+                style={[
+                  styles.value,
+                  { color: colors.darkGreen, fontWeight: '500', marginLeft: 4 },
+                ]}
+              >
+                {convertToCurrencyFormat(totalEvaluation)}
               </Text>
             </View>
           </View>
         </TouchableOpacity>
       </SwipeRowHold>
-    </View>
+    </WrapContainer>
   );
 }
 
-export default CoinCard;
+export default TokenCard;
