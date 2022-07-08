@@ -33,5 +33,5 @@ export function convertToCurrencyFormat(number) {
   return answer;
 }
 export function convertToAmountFormat(number) {
-  return number;
+  return number.toPrecision(8) * 1;
 }

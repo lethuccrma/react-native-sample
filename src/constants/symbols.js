@@ -1,4 +1,4 @@
-export default [
+const root = [
   {
     code: 'BTC',
     value: 'Bitcoin',
@@ -200,3 +200,7 @@ export default [
     value: 'KuCoin Token',
   },
 ];
+
+const sortList = () => root.sort((a, b) => a.code.localeCompare(b.code));
+
+export default sortList();
